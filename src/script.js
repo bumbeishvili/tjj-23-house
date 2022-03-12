@@ -2,6 +2,7 @@ import './style.css'
 import * as THREE from 'three'
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js'
 import * as dat from 'lil-gui'
+import { createBoxWithRoundedEdges, createPlaneWithRoundedEdges } from './utils.js'
 
 /**
  * Base
@@ -23,13 +24,55 @@ const textureLoader = new THREE.TextureLoader()
 /**
  * House
  */
-// Temporary sphere
-const sphere = new THREE.Mesh(
-    new THREE.SphereGeometry(1, 32, 32),
-    new THREE.MeshStandardMaterial({ roughness: 0.7 })
+const house = new THREE.Group();
+scene.add(house);
+
+
+const houseWidth = 4;
+const houseHeight = 3;
+
+// Walls
+const walls = new THREE.Mesh(createBoxWithRoundedEdges(houseWidth, houseHeight, houseWidth, 1 / 8, 16), new THREE.MeshStandardMaterial({
+    color: '#ac8382'
+}));
+console.log(walls);
+walls.position.y = houseHeight / 2;
+
+house.add(walls)
+
+
+
+
+// Roof
+const roofHeight = 2;
+const roof = new THREE.Mesh(
+    new THREE.ConeBufferGeometry(houseWidth, roofHeight, 4),
+    new THREE.MeshStandardMaterial({ color: '#b35f45' })
 )
-sphere.position.y = 1
-scene.add(sphere)
+roof.rotation.y = Math.PI / 4;
+roof.position.y = houseHeight + roof.geometry.parameters.height / 2 - 0.2;
+
+house.add(roof)
+
+
+// Door
+const doorWidth = 2;
+const doorHeight = 2;
+
+let panelGeometry = createPlaneWithRoundedEdges({
+    width: doorWidth,
+    height: doorHeight,
+    radius: 0.1
+});
+
+let door = new THREE.Mesh(panelGeometry, new THREE.MeshStandardMaterial({ color: '#b35f45' }))
+
+door.position.z = houseWidth / 2 + 0.001
+door.position.y = + 0.05
+door.position.x = -doorWidth / 2
+house.add(door)
+// this.mesh.rotation.x = -Math.PI / 2
+// this.container.add(this.mesh)
 
 // Floor
 const floor = new THREE.Mesh(
@@ -39,6 +82,8 @@ const floor = new THREE.Mesh(
 floor.rotation.x = - Math.PI * 0.5
 floor.position.y = 0
 scene.add(floor)
+
+
 
 /**
  * Lights
@@ -65,8 +110,7 @@ const sizes = {
     height: window.innerHeight
 }
 
-window.addEventListener('resize', () =>
-{
+window.addEventListener('resize', () => {
     // Update sizes
     sizes.width = window.innerWidth
     sizes.height = window.innerHeight
@@ -87,7 +131,7 @@ window.addEventListener('resize', () =>
 const camera = new THREE.PerspectiveCamera(75, sizes.width / sizes.height, 0.1, 100)
 camera.position.x = 4
 camera.position.y = 2
-camera.position.z = 5
+camera.position.z = 15
 scene.add(camera)
 
 // Controls
@@ -98,7 +142,8 @@ controls.enableDamping = true
  * Renderer
  */
 const renderer = new THREE.WebGLRenderer({
-    canvas: canvas
+    canvas: canvas,
+    antialias: true
 })
 renderer.setSize(sizes.width, sizes.height)
 renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
@@ -108,8 +153,7 @@ renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
  */
 const clock = new THREE.Clock()
 
-const tick = () =>
-{
+const tick = () => {
     const elapsedTime = clock.getElapsedTime()
 
     // Update controls
