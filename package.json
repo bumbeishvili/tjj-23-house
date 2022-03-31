@@ -1,7 +1,7 @@
 {
   "repository": "#",
   "license": "UNLICENSED",
-  "homepage": "https://bumbeishvili.github.io/threejs-journey-17-daunted-house",
+  "homepage": "https://bumbeishvili.github.io/threejs-journey-24-donut",
   "scripts": {
     "build": "webpack --config ./bundler/webpack.prod.js",
     "dev": "webpack serve --config ./bundler/webpack.dev.js",
