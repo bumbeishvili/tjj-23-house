@@ -21,7 +21,7 @@ const scene = new THREE.Scene()
  * Models
  */
 const dracoLoader = new DRACOLoader()
-dracoLoader.setDecoderPath('/draco/')
+dracoLoader.setDecoderPath('draco/')
 
 const gltfLoader = new GLTFLoader()
 gltfLoader.setDRACOLoader(dracoLoader)
@@ -29,7 +29,7 @@ gltfLoader.setDRACOLoader(dracoLoader)
 let mixer = null
 
 gltfLoader.load(
-    '/models/hamburger.glb',
+    'models/hamburger.glb',
     (gltf) =>
     {
         scene.add(gltf.scene)
