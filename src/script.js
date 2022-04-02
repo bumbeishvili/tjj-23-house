@@ -32,7 +32,12 @@ gltfLoader.load(
     'models/hamburger.glb',
     (gltf) =>
     {
+
         scene.add(gltf.scene)
+        scene.traverse((child) =>{
+            child.castShadow = true;
+            child.receiveShadow = true;
+        })
     }
 )
 
@@ -48,7 +53,8 @@ const floor = new THREE.Mesh(
     })
 )
 floor.receiveShadow = true
-floor.rotation.x = - Math.PI * 0.5
+floor.rotation.x = - Math.PI * 0.5;
+floor.visible = false;
 scene.add(floor)
 
 /**
@@ -96,7 +102,16 @@ window.addEventListener('resize', () =>
  */
 // Base camera
 const camera = new THREE.PerspectiveCamera(75, sizes.width / sizes.height, 0.1, 100)
-camera.position.set(- 8, 4, 8)
+camera.position.set( 4, 1, -2)
+
+// create orthographic camera
+// const camera = new THREE.OrthographicCamera(
+//     sizes.width / - 2,
+//     sizes.width / 2,
+//     sizes.height / 2,
+//     sizes.height / - 2,
+// )
+// camera.position.set(-0.2, 0.2, 0.2)
 scene.add(camera)
 
 // Controls
@@ -110,6 +125,12 @@ controls.enableDamping = true
 const renderer = new THREE.WebGLRenderer({
     canvas: canvas
 })
+
+// Activate fog
+scene.fog = new THREE.Fog(0x6D91E4, 0.1, 15)
+renderer.setClearColor(0x6D91E4)
+
+
 renderer.shadowMap.enabled = true
 renderer.shadowMap.type = THREE.PCFSoftShadowMap
 renderer.setSize(sizes.width, sizes.height)
