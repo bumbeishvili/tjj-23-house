@@ -1,3 +1,5 @@
+![](https://user-images.githubusercontent.com/6873202/161418667-f4c675d6-e836-467f-ba14-774854d1e6f8.png)
+
 # Three.js Journey
 
 ## Setup
@@ -14,3 +16,6 @@ npm run dev
 # Build for production in the dist/ directory
 npm run build
 ```
+
+
+
